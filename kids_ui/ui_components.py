@@ -7,6 +7,15 @@ from http_client import send_servo_command, cleanup, play_sound, list_sounds, st
 from theme import MAIN_COLOR, ACCENT_COLOR_1, ACCENT_COLOR_2, TEXT_COLOR, WHITE, BLACK, FLAG_IMAGE
 
 BASE_URL = "http://192.168.8.120:5000"
+BASE_URL = "http://172.20.10.10:5000"
+
+
+def get_robot_ip():
+    """Safely get the robot IP from storage with fallback"""
+    try:
+        return app.storage.user.get("robot_ip", BASE_URL)
+    except:
+        return BASE_URL
 # Navigation bar 
 
 def add_navigation(dark_mode: bool = False, current: str = ""):
@@ -119,7 +128,8 @@ def behaviour_card(name: str, route_builder, defaults: dict = None, include_wing
             else:
                 route = route_builder(amp.value, speed.value, int(reps.value))
 
-            full_code = f'requests.post(f"{{{app.storage.user["robot_ip"]}}}{route}")'
+            robot_ip = get_robot_ip()
+            full_code = f'requests.post(f"{robot_ip}{route}")'
 
             route_label.text = f"Route: {route}"
             code_box.value = full_code
@@ -128,7 +138,7 @@ def behaviour_card(name: str, route_builder, defaults: dict = None, include_wing
         # --- Execute button ---
         def execute():
             route = update_preview()
-            data = send_behavior(route)
+            data = send_behavior(get_robot_ip(), route)
             if "error" in data:
                 ui.notify(f"❌ {name} failed: {data['error']}", color="danger")
             else:
@@ -191,7 +201,7 @@ def advanced_control_card():
 
         def send():
             data = send_servo_command(
-                base_url=app.storage.user["robot_ip"], 
+                base_url=get_robot_ip(), 
                 target=target_input.value,
                 position=position_input.value,
                 method=method_input.value,
@@ -217,7 +227,7 @@ def sound_control_card():
 
         # Try fetching from server
         try:
-            available = list_sounds(app.storage.user["robot_ip"])
+            available = list_sounds(get_robot_ip())
             if isinstance(available, dict) and "error" not in available:
                 sounds = available.get("sounds", sounds)
                 print(f"Fetched sounds: {sounds}")
@@ -241,7 +251,7 @@ def sound_control_card():
 
         # --- Button Actions ---
         def play():
-            data = play_sound(app.storage.user["robot_ip"], sound_input.value)
+            data = play_sound(get_robot_ip(), sound_input.value)
             if "error" in data:
                 sound_output.value = f"❌ Error:\n{data['error']}"
                 ui.notify("Failed to play sound", color="red")
@@ -250,7 +260,7 @@ def sound_control_card():
                 ui.notify(f"Playing {sound_input.value}", color="green")
 
         def stop():
-            data = stop_sound(app.storage.user["robot_ip"])
+            data = stop_sound(get_robot_ip())
             if "error" in data:
                 sound_output.value = f"❌ Error:\n{data['error']}"
                 ui.notify("Failed to stop sound", color="red")
@@ -260,7 +270,7 @@ def sound_control_card():
 
         def refresh_list():
             try:
-                available = list_sounds(app.storage.user["robot_ip"])
+                available = list_sounds(get_robot_ip())
                 if isinstance(available, dict) and "error" not in available:
                     new_sounds = available.get("sounds", sounds)
                     new_sounds.sort()
