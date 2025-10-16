@@ -120,11 +120,6 @@ class MainPage:
                         
                         # Robot parrot interactive control
                         ui.label("Manual Control").classes("text-lg font-bold")
-                        # print if the image path exists
-                        if os.path.exists("/static/images/parrot_robot.png"):
-                            print("Image path exists")
-                            # also print the current working directory
-                            print("CWD:", os.getcwd())
                         with ui.element("div").classes("relative mx-auto").style("width: 500px; height: 500px;"):
                             ui.image("/static/images/parrot_robot.png").classes("absolute w-full h-full object-contain")
 
