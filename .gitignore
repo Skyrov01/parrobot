@@ -50,3 +50,4 @@ coverage/
 *.launch.py~
 *.rviz
 
+kids_ui/.env
