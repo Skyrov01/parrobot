@@ -32,7 +32,7 @@ Install Ubuntu 24.04 and ROS2:
 - Install ROS2 (Jazzy recommended)
 
 👉 Full setup instructions:  
-See **setup_parrots.pdf** :contentReference[oaicite:0]{index=0}  
+See **setup_parrots.pdf** 
 
 Install dependencies:
 
