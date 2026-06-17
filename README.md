@@ -43,3 +43,13 @@ sudo apt install -y \
   python3-gpiozero \
   git curl wget tmux htop vim gparted net-tools \
   ros-jazzy-rmw-fastrtps-cpp ros-jazzy-rmw-cyclonedds-cpp
+
+---
+
+## 📄 License
+
+This project uses open licenses across its components:
+
+- **Software** (ROS2 nodes, HTTP server, web interface) — [Apache License 2.0](LICENSE)
+- **Hardware designs** (3D printable parts, schematics) — [CC BY 4.0](LICENSE-CC-BY-4.0)
+- **Documentation** — [CC BY 4.0](LICENSE-CC-BY-4.0)
